@@ -1,60 +1,60 @@
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // @mui
-import { styled } from "@mui/material/styles";
-import { Card, Link, Container, Typography } from "@mui/material";
+import { styled } from '@mui/material/styles';
+import { Card, Link, Container, Typography } from '@mui/material';
 // hooks
-import useAuth from "../../hooks/useAuth";
-import useResponsive from "../../hooks/useResponsive";
+import useAuth from '../../hooks/useAuth';
+import useResponsive from '../../hooks/useResponsive';
 // routes
-import { PATH_AUTH } from "../../routes/paths";
+import { PATH_AUTH } from '../../routes/paths';
 // components
-import Page from "../../components/Page";
-import Logo from "../../components/Logo";
+import Page from '../../components/Page';
+import Logo from '../../components/Logo';
 // sections
-import AuthorizationDetails from "./register/AuthorizationDetails";
-import { useEffect, useState } from "react";
-import LoadingScreen from "src/components/LoadingScreen";
-import { postApi } from "src/common/apis";
-import RegisterApi from "src/common/apis/register.api";
+import AuthorizationDetails from './register/AuthorizationDetails';
+import { useEffect, useState } from 'react';
+import LoadingScreen from 'src/components/LoadingScreen';
+import { postApi } from 'src/common/apis';
+import RegisterApi from 'src/common/apis/register.api';
 
 // ----------------------------------------------------------------------
 
-const RootStyle = styled("div")(({ theme }) => ({
-  display: "flex",
-  background: "linear-gradient(to bottom, #541338,#050C5A)",
-  minHeight: "100vh",
+const RootStyle = styled('div')(({ theme }) => ({
+  display: 'flex',
+  background: 'linear-gradient(to bottom, #541338,#050C5A)',
+  minHeight: '100vh',
 }));
 
-const HeaderStyle = styled("header")(({ theme }) => ({
+const HeaderStyle = styled('header')(({ theme }) => ({
   top: 0,
   zIndex: 9,
   lineHeight: 0,
-  width: "100%",
-  display: "flex",
-  alignItems: "center",
-  position: "absolute",
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  position: 'absolute',
   padding: theme.spacing(3),
-  justifyContent: "space-between",
-  [theme.breakpoints.up("md")]: {
-    alignItems: "flex-start",
+  justifyContent: 'space-between',
+  [theme.breakpoints.up('md')]: {
+    alignItems: 'flex-start',
     padding: theme.spacing(7, 5, 0, 7),
   },
 }));
 
-const ContentStyle = styled("div")(({ theme }) => ({
-  margin: "auto",
-  minHeight: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  flexDirection: "column",
+const ContentStyle = styled('div')(({ theme }) => ({
+  margin: 'auto',
+  minHeight: '100vh',
+  display: 'flex',
+  justifyContent: 'center',
+  flexDirection: 'column',
   padding: theme.spacing(8, 0),
 }));
 const SectionStyle = styled(Card)(({ theme }) => ({
-  width: "100%",
+  width: '100%',
   maxWidth: 464,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
   margin: theme.spacing(2, 0, 2, 2),
 }));
 
@@ -65,7 +65,7 @@ export default function Register() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [gstData, setGstData] = useState(null);
-  const smUp = useResponsive("up", "sm");
+  const smUp = useResponsive('up', 'sm');
 
   const handleGSTDetails = async (gstNumber: string) => {
     const res = await postApi({
@@ -90,7 +90,7 @@ export default function Register() {
     // }
   };
 
-  const mdUp = useResponsive("up", "md");
+  const mdUp = useResponsive('up', 'md');
 
   const { user } = useAuth();
   console.log(user);
@@ -103,7 +103,7 @@ export default function Register() {
       if (!user.isGstVerified) {
         navigate(PATH_AUTH.verifyGst);
       }
-      if (user.documentStatus === "not_uploaded") {
+      if (user.documentStatus === 'not_uploaded') {
         navigate(PATH_AUTH.uploadDocument);
       }
     }
@@ -121,12 +121,8 @@ export default function Register() {
             <Logo />
             {smUp && (
               <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-                Already have an account? {""}
-                <Link
-                  variant="subtitle2"
-                  component={RouterLink}
-                  to={PATH_AUTH.login}
-                >
+                Already have an account? {''}
+                <Link variant="subtitle2" component={RouterLink} to={PATH_AUTH.login}>
                   Login
                 </Link>
               </Typography>
@@ -144,13 +140,9 @@ export default function Register() {
               <AuthorizationDetails />
 
               {!smUp && (
-                <Typography variant="body2" sx={{ mt: 3, textAlign: "center" }}>
-                  Already have an account?{" "}
-                  <Link
-                    variant="subtitle2"
-                    to={PATH_AUTH.login}
-                    component={RouterLink}
-                  >
+                <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
+                  Already have an account?{' '}
+                  <Link variant="subtitle2" to={PATH_AUTH.login} component={RouterLink}>
                     Login
                   </Link>
                 </Typography>

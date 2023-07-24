@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,6 +27,7 @@ type FormValuesProps = {
 
 export default function LoginForm() {
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const isMountedRef = useIsMountedRef();
 
@@ -57,7 +58,8 @@ export default function LoginForm() {
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
-      await login(data.email, data.password);
+      navigate(PATH_AUTH.verifyMfa);
+      // await login(data.email, data.password);
     } catch (error) {
       console.error(error);
 
@@ -72,8 +74,6 @@ export default function LoginForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
-
         <RHFTextField name="email" label="Email address" />
 
         <RHFTextField
@@ -93,19 +93,12 @@ export default function LoginForm() {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <RHFCheckbox name="remember" label="Remember me" />
         <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword}>
           Forgot password?
         </Link>
       </Stack>
 
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        loading={isSubmitting}
-      >
+      <LoadingButton fullWidth type="submit" variant="contained" loading={isSubmitting}>
         Login
       </LoadingButton>
     </FormProvider>

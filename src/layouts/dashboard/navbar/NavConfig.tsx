@@ -45,12 +45,8 @@ const navConfig = [
   {
     subheader: 'Dashboards',
     items: [
-      { title: 'Custodian', path: PATH_DASHBOARD.general.custodian, icon: ICONS.user },
-      { title: 'Retailer', path: PATH_DASHBOARD.general.retailer, icon: ICONS.banking },
-      { title: 'Verifier', path: PATH_DASHBOARD.general.verifier, icon: ICONS.booking },
-      { title: 'Refiner', path: PATH_DASHBOARD.general.refiner, icon: ICONS.kanban },
-      { title: 'Lease Parther', path: PATH_DASHBOARD.general.leasePartner, icon: ICONS.menuItem },
-      { title: 'Hub', path: PATH_DASHBOARD.general.hub, icon: ICONS.mail },
+      { title: 'User Management', path: PATH_DASHBOARD.userManagement, icon: ICONS.user },
+
       // {
       //   title: 'Industries',
       //   path: PATH_DASHBOARD.industries.root,

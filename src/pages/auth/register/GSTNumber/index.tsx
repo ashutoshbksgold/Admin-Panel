@@ -1,66 +1,59 @@
-import {
-  Card,
-  Typography,
-  TextField,
-  Button,
-  Box,
-  Container,
-} from "@mui/material";
-import { useEffect, useState } from "react";
-import { postApi } from "src/common/apis";
-import RegisterApi from "src/common/apis/register.api";
-import LoadingScreen from "src/components/LoadingScreen";
-import Logo from "src/components/Logo";
-import Page from "src/components/Page";
-import useResponsive from "src/hooks/useResponsive";
-import { styled } from "@mui/material/styles";
-import { Link } from "@mui/material";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { PATH_AUTH } from "src/routes/paths";
-import useAuth from "src/hooks/useAuth";
-import GSTNumberForm from "./GSTNumberForm";
-import ConfirmGstDetails from "./ConfirmGstDetails";
-import GstVerify from "./GstVerify";
-import Image from "src/components/Image";
+import { Card, Typography, TextField, Button, Box, Container } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { postApi } from 'src/common/apis';
+import RegisterApi from 'src/common/apis/register.api';
+import LoadingScreen from 'src/components/LoadingScreen';
+import Logo from 'src/components/Logo';
+import Page from 'src/components/Page';
+import useResponsive from 'src/hooks/useResponsive';
+import { styled } from '@mui/material/styles';
+import { Link } from '@mui/material';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { PATH_AUTH } from 'src/routes/paths';
+import useAuth from 'src/hooks/useAuth';
+import GSTNumberForm from './GSTNumberForm';
+import ConfirmGstDetails from './ConfirmGstDetails';
+import GstVerify from './GstVerify';
+import Image from 'src/components/Image';
 
-const RootStyle = styled("div")(({ theme }) => ({
-  display: "flex",
-  background: "linear-gradient(to bottom, #541338,#050C5A)",
-  minHeight: "100vh",
+const RootStyle = styled('div')(({ theme }) => ({
+  display: 'flex',
+  background: 'linear-gradient(to bottom, #541338,#050C5A)',
+  minHeight: '100vh',
 }));
 
-const HeaderStyle = styled("header")(({ theme }) => ({
+const HeaderStyle = styled('header')(({ theme }) => ({
   top: 0,
   zIndex: 9,
   lineHeight: 0,
-  width: "100%",
-  display: "flex",
-  alignItems: "center",
-  position: "absolute",
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  position: 'absolute',
   padding: theme.spacing(3),
-  justifyContent: "space-between",
-  [theme.breakpoints.up("md")]: {
-    alignItems: "flex-start",
+  justifyContent: 'space-between',
+  [theme.breakpoints.up('md')]: {
+    alignItems: 'flex-start',
     padding: theme.spacing(7, 5, 0, 7),
   },
 }));
 
-const ContentStyle = styled("div")(({ theme }) => ({
-  margin: "auto",
-  minHeight: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  flexDirection: "column",
+const ContentStyle = styled('div')(({ theme }) => ({
+  margin: 'auto',
+  minHeight: '100vh',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column',
   padding: theme.spacing(8, 0),
 }));
 
 const SectionStyle = styled(Card)(({ theme }) => ({
-  width: "100%",
-  maxWidth: "50%",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
+  width: '100%',
+  maxWidth: '50%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
   margin: theme.spacing(2, 0, 2, 2),
 }));
 
@@ -77,8 +70,8 @@ type GstDetailType = {
 
 const GSTNumber = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const smUp = useResponsive("up", "sm");
-  const mdUp = useResponsive("up", "md");
+  const smUp = useResponsive('up', 'sm');
+  const mdUp = useResponsive('up', 'md');
   const [gstDetails, setGstDetails] = useState<GstDetailType>();
   const [verify, setVerify] = useState(false);
   const navigate = useNavigate();
@@ -120,7 +113,7 @@ const GSTNumber = () => {
 
   // Sent Otp
   const sendGstOtp = async (clientId: string) => {
-    console.log("log: sendgst code");
+    console.log('log: sendgst code');
     setIsLoading(true);
     //TODO: need to enable
     const res = await postApi({
@@ -181,21 +174,14 @@ const GSTNumber = () => {
               {gstDetails && verify ? (
                 <GstVerify verifyGstOtp={verifyGstOtp} isLoading={isLoading} />
               ) : gstDetails ? (
-                <ConfirmGstDetails
-                  gstData={gstDetails}
-                  sendGstOtp={sendGstOtp}
-                />
+                <ConfirmGstDetails gstData={gstDetails} sendGstOtp={sendGstOtp} />
               ) : (
                 <GSTNumberForm handleGSTSubmit={handleGSTSubmit} />
               )}
               {!smUp && (
-                <Typography variant="body2" sx={{ mt: 3, textAlign: "center" }}>
-                  Already have an account?{" "}
-                  <Link
-                    variant="subtitle2"
-                    to={PATH_AUTH.login}
-                    component={RouterLink}
-                  >
+                <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
+                  Already have an account?{' '}
+                  <Link variant="subtitle2" to={PATH_AUTH.login} component={RouterLink}>
                     Login
                   </Link>
                 </Typography>
@@ -205,11 +191,7 @@ const GSTNumber = () => {
 
           {mdUp && (!gstDetails || verify) && (
             <SectionStyle>
-              <Typography
-                variant="h3"
-                color="primary"
-                sx={{ px: 5, mt: 10, mb: 5 }}
-              >
+              <Typography variant="h3" color="primary" sx={{ px: 5, mt: 10, mb: 5 }}>
                 Verify GST Number!
               </Typography>
               <Image
@@ -221,11 +203,10 @@ const GSTNumber = () => {
                 alt="login"
               />
               <Typography variant="subtitle1" color="primary.light" p={5}>
-                Your privacy is important to us. At MyGold, We follow a few
-                fundamental principles: We don’t ask you for personally
-                identifiable information and We don’t share your information
-                with third parties. If you have any questions or concerns about
-                this policy, please reach out to us at
+                Your privacy is important to us. At MyGold, We follow a few fundamental principles:
+                We don’t ask you for personally identifiable information and We don’t share your
+                information with third parties. If you have any questions or concerns about this
+                policy, please reach out to us at
               </Typography>
             </SectionStyle>
           )}

@@ -1,23 +1,23 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 // @mui
-import { Card, Container } from "@mui/material";
+import { Card, Container } from '@mui/material';
 // routes
-import { PATH_DASHBOARD } from "../../../routes/paths";
+import { PATH_DASHBOARD } from '../../../routes/paths';
 // hooks
-import useSettings from "../../../hooks/useSettings";
+import useSettings from '../../../hooks/useSettings';
 // components
-import Page from "../../../components/Page";
-import HeaderBreadcrumbs from "../../../components/HeaderBreadcrumbs";
+import Page from '../../../components/Page';
+import HeaderBreadcrumbs from '../../../components/HeaderBreadcrumbs';
 
 // sections
-import { useTheme } from "@mui/material";
-import useAuth from "src/hooks/useAuth";
-import { getApi } from "src/common/apis";
-import RetailerApi from "src/common/apis/retailer.api";
+import { useTheme } from '@mui/material';
+import useAuth from 'src/hooks/useAuth';
+import { getApi } from 'src/common/apis';
+import RetailerApi from 'src/common/apis/retailer.api';
 
 // ----------------------------------------------------------------------
 
-export default function Retailer() {
+export default function UserManagement() {
   const { themeStretch } = useSettings();
   const theme = useTheme();
   const { user } = useAuth();
@@ -35,20 +35,17 @@ export default function Retailer() {
   }, []);
 
   useEffect(() => {
-    if (user && user.modules.retailer.agreementStatus == "signed") {
+    if (user && user.modules.retailer.agreementStatus == 'signed') {
       getRetailerData();
     }
   }, []);
 
   return (
     <Page title="Retailer ">
-      <Container maxWidth={themeStretch ? false : "xl"}>
+      <Container maxWidth={themeStretch ? false : 'xl'}>
         <HeaderBreadcrumbs
           heading="Retailer"
-          links={[
-            { name: "Dashboard", href: PATH_DASHBOARD.root },
-            { name: "Retailer" },
-          ]}
+          links={[{ name: 'Dashboard', href: PATH_DASHBOARD.root }, { name: 'Retailer' }]}
         />
 
         <Card elevation={5} sx={{ p: 5 }}>

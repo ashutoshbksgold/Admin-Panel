@@ -1,24 +1,18 @@
-import * as Yup from "yup";
-import { useEffect, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import * as Yup from 'yup';
+import { useEffect, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 // form
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Link, Stack, Alert, IconButton, InputAdornment } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-// routes
-import { PATH_AUTH } from "../../../routes/paths";
+import { Link, Stack, Alert, IconButton, InputAdornment } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+
 // hooks
-import useAuth from "../../../hooks/useAuth";
-import useIsMountedRef from "../../../hooks/useIsMountedRef";
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
-import Iconify from "../../../components/Iconify";
-import { FormProvider } from "../../../components/hook-form";
-import { AuthApi, getApi, postApi } from "src/common/apis";
-import axios from "axios";
-import { Formik } from "formik";
-import { TextField } from "@mui/material";
+import { Formik } from 'formik';
+import { TextField } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -34,39 +28,35 @@ type FormProp = {
   verifyOtp: (values: FormValuesProps) => Promise<any>;
 };
 
-let nextfield: any = "";
-let nextfield2: any = "";
-let nextfield3: any = "";
+let nextfield: any = '';
+let nextfield2: any = '';
+let nextfield3: any = '';
 
 export default function OtpForm({ verifyOtp }: FormProp) {
   const isMountedRef = useIsMountedRef();
 
   useEffect(() => {
-    nextfield = document.getElementById("myTextInput");
-    nextfield2 = document.getElementById("myTextInput2");
-    nextfield3 = document.getElementById("myTextInput3");
+    nextfield = document.getElementById('myTextInput');
+    nextfield2 = document.getElementById('myTextInput2');
+    nextfield3 = document.getElementById('myTextInput3');
   }, [document]);
 
   const OtpSchema = Yup.object().shape({
-    otp1: Yup.string().required("").min(1, "").max(1, ""),
-    otp2: Yup.string().required("").min(1, "").max(1, " "),
-    otp3: Yup.string().required("").min(1, " ").max(1, " "),
-    otp4: Yup.string().required("").min(1, " ").max(1, " "),
+    otp1: Yup.string().required('').min(1, '').max(1, ''),
+    otp2: Yup.string().required('').min(1, '').max(1, ' '),
+    otp3: Yup.string().required('').min(1, ' ').max(1, ' '),
+    otp4: Yup.string().required('').min(1, ' ').max(1, ' '),
   });
 
   const defaultValues = {
-    otp1: "",
-    otp2: "",
-    otp3: "",
-    otp4: "",
+    otp1: '',
+    otp2: '',
+    otp3: '',
+    otp4: '',
   };
 
   return (
-    <Formik
-      onSubmit={verifyOtp}
-      validationSchema={OtpSchema}
-      initialValues={defaultValues}
-    >
+    <Formik onSubmit={verifyOtp} validationSchema={OtpSchema} initialValues={defaultValues}>
       {({ handleChange, handleSubmit, errors, isSubmitting, values }) => (
         <form onSubmit={handleSubmit}>
           <Stack spacing={3} mb={4} direction="row">
@@ -78,7 +68,7 @@ export default function OtpForm({ verifyOtp }: FormProp) {
               value={values.otp1}
               onChange={(e) => {
                 handleChange(e);
-                console.log("log:", e.target.value);
+                console.log('log:', e.target.value);
                 if (e.target?.value?.length === 1) {
                   if (nextfield) {
                     nextfield.focus();
@@ -116,12 +106,7 @@ export default function OtpForm({ verifyOtp }: FormProp) {
                 }
               }}
             />
-            <TextField
-              value={values.otp4}
-              onChange={handleChange}
-              sx={{ width: 60 }}
-              name="otp4"
-            />
+            <TextField value={values.otp4} onChange={handleChange} sx={{ width: 60 }} name="otp4" />
           </Stack>
 
           <LoadingButton

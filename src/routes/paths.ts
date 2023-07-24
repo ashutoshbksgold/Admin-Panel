@@ -12,6 +12,7 @@ const ROOTS_DASHBOARD = '/dashboard';
 export const PATH_AUTH = {
   root: ROOTS_AUTH,
   login: path(ROOTS_AUTH, '/login'),
+  verifyMfa: path(ROOTS_AUTH, '/verify-mfa'),
   register: path(ROOTS_AUTH, '/register'),
   loginUnprotected: path(ROOTS_AUTH, '/login-unprotected'),
   registerUnprotected: path(ROOTS_AUTH, '/register-unprotected'),
@@ -43,14 +44,9 @@ export const PATH_PAGE = {
 
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
-  general: {
-    custodian: path(ROOTS_DASHBOARD, '/custodian'),
-    retailer: path(ROOTS_DASHBOARD, '/retailer'),
-    verifier: path(ROOTS_DASHBOARD, '/verifier'),
-    refiner: path(ROOTS_DASHBOARD, '/refiner'),
-    leasePartner: path(ROOTS_DASHBOARD, '/lease-partner'),
-    hub: path(ROOTS_DASHBOARD, '/hub'),
-  },
+
+  //Dashboard Paths
+  userManagement: path(ROOTS_DASHBOARD, '/user-management'),
 
   settings: path(ROOTS_DASHBOARD, '/settings'),
   reports: path(ROOTS_DASHBOARD, '/reports'),

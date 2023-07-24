@@ -149,7 +149,6 @@ export default function VerifyCodeForm({ onSubmit, isLoading }: any) {
 
         <LoadingButton
           fullWidth
-          size="large"
           type="submit"
           variant="contained"
           loading={isLoading}

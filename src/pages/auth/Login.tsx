@@ -62,79 +62,37 @@ type VerifyOtpProp = {
 // ----------------------------------------------------------------------
 
 export default function Login() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [otpSent, isOtpSent] = useState(false);
-  const [mobileNumber, setMobileNumber] = useState('');
   const smUp = useResponsive('up', 'sm');
   const device_id = uuid().slice(0, 8);
 
   const mdUp = useResponsive('up', 'md');
-
-  const verifyOtp = async (values: VerifyOtpProp) => {
-    setIsLoading(true);
-    const otp = values.code1 + values.code2 + values.code3 + values.code4;
-
-    let deviceId = device_id;
-    //await verify otp
-    setIsLoading(false);
-    console.log('log: values', otp);
-  };
 
   return (
     <Page title="Admin Login">
       <RootStyle>
         <Container>
           <ContentStyle>
-            <Box>
-              <Box>
-                {otpSent ? (
-                  <>
-                    <Typography variant="h3" color="primary.light">
-                      Please check your phone!
-                    </Typography>
-                    <Typography sx={{ color: 'text.secondary' }} px={3} mb={2}>
-                      We have send a 4-digit confirmation code , please enter the code to verify
-                      your Identity.
-                    </Typography>
-                  </>
-                ) : (
-                  <>
-                    <Box color="primary" sx={{ my: 3 }}>
-                      <Logo sx={{ height: 150, width: 150 }} height={150} width={150} />
-                      <Typography variant="h5" color="primary">
-                        <span style={{ fontWeight: 700, fontFamily: 'Montserrat' }}>Sign in</span>{' '}
-                        <span style={{ fontWeight: 500, fontFamily: 'Montserrat' }}>for</span>{' '}
-                      </Typography>
-                      <Typography color="primary" fontFamily="Mont" fontWeight={500} variant="h5">
-                        MyGold Applications
-                      </Typography>
-                      <Typography
-                        color="primary.light"
-                        sx={{ marginTop: 1, fontFamily: 'Montserrat' }}
-                        gutterBottom
-                        variant="body2"
-                      >
-                        Use your credentials to log in to your account
-                      </Typography>
-                    </Box>
-                  </>
-                )}
+            <Box mr={2}>
+              <Box color="primary" sx={{ my: 3 }}>
+                <Logo sx={{ height: 150, width: 150 }} height={150} width={150} />
+                <Typography variant="h5" color="primary">
+                  <span style={{ fontWeight: 700, fontFamily: 'Montserrat' }}>Sign in</span>{' '}
+                  <span style={{ fontWeight: 500, fontFamily: 'Montserrat' }}>for</span>{' '}
+                </Typography>
+                <Typography color="primary" fontFamily="Mont" fontWeight={500} variant="h5">
+                  MyGold Applications
+                </Typography>
+                <Typography
+                  color="primary.light"
+                  sx={{ marginTop: 1, fontFamily: 'Montserrat' }}
+                  gutterBottom
+                  variant="body2"
+                >
+                  Use your credentials to log in to your account
+                </Typography>
               </Box>
 
-              {otpSent ? (
-                <VerifyCodeForm onSubmit={verifyOtp} isLoading={isLoading} />
-              ) : (
-                <LoginForm />
-              )}
-
-              {otpSent && (
-                <Typography variant="body2" mt={3}>
-                  Don’t have a code? &nbsp;
-                  <Link variant="subtitle2" onClick={() => {}}>
-                    Resend code
-                  </Link>
-                </Typography>
-              )}
+              <LoginForm />
             </Box>
 
             {mdUp && (

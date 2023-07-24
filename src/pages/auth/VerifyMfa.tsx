@@ -86,55 +86,34 @@ export default function Login() {
         <Container>
           <ContentStyle>
             <Box>
-              <Box>
-                {otpSent ? (
-                  <>
-                    <Typography variant="h3" color="primary.light">
-                      Please check your phone!
-                    </Typography>
-                    <Typography sx={{ color: 'text.secondary' }} px={3} mb={2}>
-                      We have send a 4-digit confirmation code , please enter the code to verify
-                      your Identity.
-                    </Typography>
-                  </>
-                ) : (
-                  <>
-                    <Box color="primary" sx={{ my: 3 }}>
-                      <Logo sx={{ height: 150, width: 150 }} height={150} width={150} />
-                      <Typography variant="h5" color="primary">
-                        <span style={{ fontWeight: 700, fontFamily: 'Montserrat' }}>Sign in</span>{' '}
-                        <span style={{ fontWeight: 500, fontFamily: 'Montserrat' }}>for</span>{' '}
-                      </Typography>
-                      <Typography color="primary" fontFamily="Mont" fontWeight={500} variant="h5">
-                        MyGold Applications
-                      </Typography>
-                      <Typography
-                        color="primary.light"
-                        sx={{ marginTop: 1, fontFamily: 'Montserrat' }}
-                        gutterBottom
-                        variant="body2"
-                      >
-                        Use your credentials to log in to your account
-                      </Typography>
-                    </Box>
-                  </>
-                )}
-              </Box>
+              <Box color="primary" sx={{ my: 7 }}>
+                <Logo sx={{ height: 150, width: 150 }} height={150} width={150} />
 
-              {otpSent ? (
-                <VerifyCodeForm onSubmit={verifyOtp} isLoading={isLoading} />
-              ) : (
-                <LoginForm />
-              )}
-
-              {otpSent && (
-                <Typography variant="body2" mt={3}>
-                  Don’t have a code? &nbsp;
-                  <Link variant="subtitle2" onClick={() => {}}>
-                    Resend code
+                <Typography color="primary" fontWeight={700} variant="h5">
+                  Your system is protected{' '}
+                </Typography>
+                <Typography color="primary" variant="body2">
+                  With MFA, Please enter MFA using <br />
+                  <Link
+                    variant="h5"
+                    color="primary"
+                    underline="none"
+                    sx={{
+                      textDecoration: 'none',
+                      fontWeight: 400,
+                      '&:hover': {
+                        fontWeight: 'bolder',
+                      },
+                    }}
+                    target="_blank"
+                    href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en_IN&gl=US"
+                  >
+                    Google Authenticator
                   </Link>
                 </Typography>
-              )}
+              </Box>
+
+              <VerifyCodeForm onSubmit={verifyOtp} isLoading={isLoading} />
             </Box>
 
             {mdUp && (
