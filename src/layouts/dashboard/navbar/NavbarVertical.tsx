@@ -44,6 +44,8 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }: Props)
 
   const { user } = useAuth();
 
+  console.log('log: auth', user);
+
   // const filteredNavConfig = navConfig
   //   .map((section) => {
   //     if (section.subheader === "Dashboards") {

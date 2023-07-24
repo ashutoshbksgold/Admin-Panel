@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useParams } from 'react-router-dom';
+import * as Yup from 'yup';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Card, Link, Container, Typography } from '@mui/material';
+import { Box, Card, Link, Container, Typography, TextField } from '@mui/material';
 // routes
 import { PATH_AUTH } from '../../routes/paths';
 //hooks
@@ -17,6 +18,8 @@ import { VerifyCodeForm } from 'src/sections/auth/verify-code';
 // sections
 import { LoginForm } from '../../sections/auth/login';
 import { Icon } from '@iconify/react';
+import { Formik } from 'formik';
+import { LoadingButton } from '@mui/lab';
 
 // ----------------------------------------------------------------------
 
@@ -52,32 +55,32 @@ type FormValuesProps = {
   afterSubmit?: string;
 };
 type VerifyOtpProp = {
-  code1: string;
-  code2: string;
-  code3: string;
-  code4: string;
-  afterSubmit?: string;
+  token: string;
 };
 
 // ----------------------------------------------------------------------
 
-export default function Login() {
+export default function VerifyMfa() {
   const [isLoading, setIsLoading] = useState(false);
-  const [otpSent, isOtpSent] = useState(false);
-  const [mobileNumber, setMobileNumber] = useState('');
-  const smUp = useResponsive('up', 'sm');
-  const device_id = uuid().slice(0, 8);
-
+  const location = useLocation();
   const mdUp = useResponsive('up', 'md');
+  const { validateMfa } = useAuth();
 
-  const verifyOtp = async (values: VerifyOtpProp) => {
+  console.log('log: locaiton', location.search.slice(1));
+
+  const MfaSchema = Yup.object().shape({
+    token: Yup.string()
+      .required('Mfa code required!')
+      .min(6, 'Min 6 digits required!')
+      .max(6, 'Max 6 digits required!'),
+  });
+
+  const verifyMfa = async (values: VerifyOtpProp) => {
     setIsLoading(true);
-    const otp = values.code1 + values.code2 + values.code3 + values.code4;
 
-    let deviceId = device_id;
-    //await verify otp
+    const res = await validateMfa(values.token, location.search.slice(1));
     setIsLoading(false);
-    console.log('log: values', otp);
+    console.log('log: values', values.token);
   };
 
   return (
@@ -113,7 +116,35 @@ export default function Login() {
                 </Typography>
               </Box>
 
-              <VerifyCodeForm onSubmit={verifyOtp} isLoading={isLoading} />
+              {/* <VerifyCodeForm onSubmit={verifyOtp} isLoading={isLoading} /> */}
+
+              <Formik
+                onSubmit={verifyMfa}
+                validationSchema={MfaSchema}
+                initialValues={{ token: '' }}
+              >
+                {({ handleSubmit, handleChange, values }) => (
+                  <form onSubmit={handleSubmit}>
+                    <TextField
+                      name="token"
+                      onChange={handleChange}
+                      fullWidth
+                      value={values.token}
+                      label="Mfa Token"
+                    />
+
+                    <LoadingButton
+                      type="submit"
+                      variant="contained"
+                      fullWidth
+                      loading={isLoading}
+                      sx={{ mt: 3 }}
+                    >
+                      Verify Mfa
+                    </LoadingButton>
+                  </form>
+                )}
+              </Formik>
             </Box>
 
             {mdUp && (

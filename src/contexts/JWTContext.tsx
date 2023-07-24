@@ -1,17 +1,19 @@
-import { createContext, ReactNode, useEffect, useReducer } from "react";
+import { createContext, ReactNode, useEffect, useReducer } from 'react';
 // utils
-import axios from "../utils/axios";
-import { isValidToken, setSession } from "../utils/jwt";
+import axios from '../utils/axios';
+import { generateAuthUser, isValidToken, setSession } from '../utils/jwt';
 // @types
-import { ActionMap, AuthState, AuthUser, JWTContextType } from "../@types/auth";
+import { ActionMap, AuthState, AuthUser, JWTContextType } from '../@types/auth';
+import { AuthApi, postApi } from 'src/common/apis';
+import { ELocalStorageKeys } from 'src/common/enums';
 
 // ----------------------------------------------------------------------
 
 enum Types {
-  Initial = "INITIALIZE",
-  Login = "LOGIN",
-  Logout = "LOGOUT",
-  Register = "REGISTER",
+  Initial = 'INITIALIZE',
+  Login = 'LOGIN',
+  Logout = 'LOGOUT',
+  Register = 'REGISTER',
 }
 
 type JWTAuthPayload = {
@@ -28,8 +30,7 @@ type JWTAuthPayload = {
   };
 };
 
-export type JWTActions =
-  ActionMap<JWTAuthPayload>[keyof ActionMap<JWTAuthPayload>];
+export type JWTActions = ActionMap<JWTAuthPayload>[keyof ActionMap<JWTAuthPayload>];
 
 const initialState: AuthState = {
   isAuthenticated: false,
@@ -39,26 +40,26 @@ const initialState: AuthState = {
 
 const JWTReducer = (state: AuthState, action: JWTActions) => {
   switch (action.type) {
-    case "INITIALIZE":
+    case 'INITIALIZE':
       return {
         isAuthenticated: action.payload.isAuthenticated,
         isInitialized: true,
         user: action.payload.user,
       };
-    case "LOGIN":
+    case 'LOGIN':
       return {
         ...state,
         isAuthenticated: true,
         user: action.payload.user,
       };
-    case "LOGOUT":
+    case 'LOGOUT':
       return {
         ...state,
         isAuthenticated: false,
         user: null,
       };
 
-    case "REGISTER":
+    case 'REGISTER':
       return {
         ...state,
         isAuthenticated: true,
@@ -84,12 +85,12 @@ function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     const initialize = async () => {
       try {
-        const accessToken = localStorage.getItem("accessToken");
+        const accessToken = localStorage.getItem('accessToken');
 
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
 
-          const response = await axios.get("/api/account/my-account");
+          const response = await axios.get('/api/account/my-account');
           const { user } = response.data;
 
           dispatch({
@@ -124,29 +125,61 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await axios.post("/api/account/login", {
-      email,
-      password,
-    });
-    const { accessToken, user } = response.data;
+    const res = await postApi({ url: AuthApi.login, values: { email, password }, showToast: true });
 
-    setSession(accessToken);
+    if (!res || !res.data) {
+      return;
+    }
+    localStorage.setItem(ELocalStorageKeys.MFA_TOKEN, res.data.tokens.accessToken);
 
+    // setTokenSession(res.data.tokens.accessToken);
+
+    return res.data;
     dispatch({
       type: Types.Login,
       payload: {
-        user,
+        user: res.data.user,
       },
     });
   };
 
-  const register = async (
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string
-  ) => {
-    const response = await axios.post("/api/account/register", {
+  const validateMfa = async (token: string, email: string) => {
+    let accesstoken = localStorage.getItem(ELocalStorageKeys.MFA_TOKEN);
+
+    axios.defaults.headers.post['Content-Type'] = 'application/json';
+    axios.defaults.headers.common.Authorization = `Bearer ${accesstoken}`;
+
+    try {
+      const { data } = await axios.post(
+        `https://api-staging.bksmygold.com/admin${AuthApi.validate}`,
+        {
+          token,
+          email,
+        }
+      );
+      if (!data || !data.data) {
+        return;
+      }
+
+      console.log(data.data);
+      const user = generateAuthUser(data.data.user);
+      console.log('log: suer', user);
+
+      setSession(data.data.tokens.accessToken);
+
+      dispatch({
+        type: Types.Login,
+        payload: {
+          user,
+        },
+      });
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const register = async (email: string, password: string, firstName: string, lastName: string) => {
+    const response = await axios.post('/api/account/register', {
       email,
       password,
       firstName,
@@ -154,7 +187,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     });
     const { accessToken, user } = response.data;
 
-    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem('accessToken', accessToken);
 
     dispatch({
       type: Types.Register,
@@ -173,10 +206,11 @@ function AuthProvider({ children }: AuthProviderProps) {
     <AuthContext.Provider
       value={{
         ...state,
-        method: "jwt",
+        method: 'jwt',
         login,
         logout,
         register,
+        validateMfa,
       }}
     >
       {children}

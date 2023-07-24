@@ -91,7 +91,7 @@ export default function Router() {
           ),
         },
         { path: 'select-module', element: <SelectModule /> },
-        { path: 'verify-gst', element: <GSTNumber /> },
+        { path: 'verify-gst/:email', element: <GSTNumber /> },
         // { path: 'confirm-gst-details', element: <ConfirmGstDetails /> },
         // { path: 'gst-otp', element: <GSTVerify /> },
         { path: 'upload-document', element: <DocumentUpload /> },
@@ -116,17 +116,13 @@ export default function Router() {
       ),
       children: [
         {
-          element: <Navigate to={`/dashboard`} replace />,
+          element: <Navigate to={PATH_AFTER_LOGIN} replace />,
           index: true,
         },
+        { path: 'app', element: <GeneralApp /> },
         {
           path: 'user-management',
-          children: [
-            {
-              path: '',
-              element: <EcommerceCheckout />,
-            },
-          ],
+          element: <UserManagement />,
         },
 
         // Settings
@@ -271,6 +267,7 @@ const AuthorizationDetails = Loadable(
 );
 const Thankyou = Loadable(lazy(() => import('../pages/auth/register/Success')));
 // DASHBOARD
+const UserManagement = Loadable(lazy(() => import('../pages/dashboard/user-management')));
 
 //settings
 const Settings = Loadable(lazy(() => import('../pages/settings')));

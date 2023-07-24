@@ -15,6 +15,8 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField, RHFCheckbox } from '../../../components/hook-form';
+import { AuthApi, postApi } from 'src/common/apis';
+import { ELocalStorageKeys } from 'src/common/enums';
 
 // ----------------------------------------------------------------------
 
@@ -58,7 +60,15 @@ export default function LoginForm() {
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
-      navigate(PATH_AUTH.verifyMfa);
+      // const res = await postApi({
+      //   url: AuthApi.login,
+      //   values: { email: data.email, password: data.password },
+      //   showToast: true,
+      // });
+
+      const res = await login(data.email, data.password);
+
+      navigate({ pathname: `${PATH_AUTH.verifyMfa}?${data.email}` });
       // await login(data.email, data.password);
     } catch (error) {
       console.error(error);

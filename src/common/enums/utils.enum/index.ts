@@ -1,6 +1,6 @@
 export enum ELocalStorageKeys {
   ACCESS_TOKEN = 'accessToken',
-  REGISTER_TOKEN = 'registerToken',
+  MFA_TOKEN = 'mfaToken',
   USER = 'user',
 }
 

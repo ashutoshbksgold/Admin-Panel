@@ -1,8 +1,9 @@
-import jwtDecode from "jwt-decode";
+import jwtDecode from 'jwt-decode';
 // routes
-import { PATH_AUTH } from "../routes/paths";
+import { PATH_AUTH } from '../routes/paths';
 //
-import axios from "./axios";
+import axios from './axios';
+import axiosInstance from './axiosInstance';
 
 // ----------------------------------------------------------------------
 
@@ -29,9 +30,9 @@ const handleTokenExpired = (exp: number) => {
   clearTimeout(expiredTimer);
 
   expiredTimer = setTimeout(() => {
-    alert("Token expired");
+    alert('Token expired');
 
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem('accessToken');
 
     window.location.href = PATH_AUTH.login;
   }, timeLeft);
@@ -39,16 +40,41 @@ const handleTokenExpired = (exp: number) => {
 
 const setSession = (accessToken: string | null) => {
   if (accessToken) {
-    localStorage.setItem("accessToken", accessToken);
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    localStorage.setItem('accessToken', accessToken);
+    axiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
     // This function below will handle when token is expired
-    const { exp } = jwtDecode<{ exp: number }>(accessToken); // ~5 days by minimals server
-    handleTokenExpired(exp);
+    const { exp } = jwtDecode<{ exp: number }>(accessToken);
+    // handleTokenExpired(exp);
   } else {
-    localStorage.removeItem("accessToken");
-    delete axios.defaults.headers.common.Authorization;
+    localStorage.removeItem('accessToken');
+    delete axiosInstance.defaults.headers.common.Authorization;
   }
 };
 
-export { isValidToken, setSession };
+const setTokenSession = (mfaToken: string | null) => {
+  if (mfaToken) {
+    // This function below will handle when token is expired
+    const { exp } = jwtDecode<{ exp: number }>(mfaToken);
+    handleTokenExpired(exp);
+  }
+};
+
+const generateAuthUser = (user: any) => {
+  return {
+    displayName: user?.name || '',
+    email: user?.email || '',
+    photoURL: user?.image || '',
+    phoneNumber: user?.mobile || '',
+    country: user?.country || '',
+    address: user?.address || '',
+    state: user?.state || '',
+    city: user?.city || '',
+    zipCode: user?.zipCode || '',
+    about: user?.about || '',
+    isPublic: user?.isPublic || false,
+    ...user,
+  };
+};
+
+export { isValidToken, setSession, generateAuthUser };

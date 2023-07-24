@@ -35,15 +35,15 @@ const ICONS = {
 const navConfig = [
   // GENERAL
   // ----------------------------------------------------------------------
-  // {
-  //   subheader: 'general',
-  //   items: [{ title: 'app', path: PATH_DASHBOARD.general.app, icon: ICONS.dashboard }],
-  // },
+  {
+    subheader: '',
+    items: [{ title: 'Dashboard', path: PATH_DASHBOARD.root, icon: ICONS.dashboard }],
+  },
 
   // MANAGEMENT
   // ----------------------------------------------------------------------
   {
-    subheader: 'Dashboards',
+    subheader: '',
     items: [
       { title: 'User Management', path: PATH_DASHBOARD.userManagement, icon: ICONS.user },
 

@@ -9,13 +9,10 @@ const axiosInstance = axios.create({
 
 // Where you would set stuff like your 'Authorization' header, etc ...
 
-if (
-  localStorage.getItem(ELocalStorageKeys.ACCESS_TOKEN) ||
-  localStorage.getItem(ELocalStorageKeys.REGISTER_TOKEN)
-) {
+if (localStorage.getItem(ELocalStorageKeys.ACCESS_TOKEN)) {
   const accessToken = localStorage.getItem(ELocalStorageKeys.ACCESS_TOKEN);
-  const registerToken = localStorage.getItem(ELocalStorageKeys.REGISTER_TOKEN);
-  axiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken || registerToken}`;
+
+  axiosInstance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 }
 
 axiosInstance.defaults.headers.post['Content-Type'] = 'application/json';

@@ -1,4 +1,4 @@
-import { UserCredential } from "firebase/auth";
+import { UserCredential } from 'firebase/auth';
 
 // ----------------------------------------------------------------------
 
@@ -25,14 +25,10 @@ export type JWTContextType = {
   isAuthenticated: boolean;
   isInitialized: boolean;
   user: AuthUser;
-  method: "jwt";
+  method: 'jwt';
   login: (email: string, password: string) => Promise<void>;
-  register: (
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string
-  ) => Promise<void>;
+  register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
+  validateMfa: (token: string, email: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -40,14 +36,9 @@ export type FirebaseContextType = {
   isAuthenticated: boolean;
   isInitialized: boolean;
   user: AuthUser;
-  method: "firebase";
+  method: 'firebase';
   login: (email: string, password: string) => Promise<UserCredential>;
-  register: (
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string
-  ) => Promise<void>;
+  register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 
@@ -55,7 +46,7 @@ export type AWSCognitoContextType = {
   isAuthenticated: boolean;
   isInitialized: boolean;
   user: AuthUser;
-  method: "cognito";
+  method: 'cognito';
   login: (email: string, password: string) => Promise<unknown>;
   register: (
     email: string,
@@ -70,7 +61,7 @@ export type Auth0ContextType = {
   isAuthenticated: boolean;
   isInitialized: boolean;
   user: AuthUser;
-  method: "auth0";
+  method: 'auth0';
   login: () => Promise<void>;
   logout: VoidFunction;
 };
